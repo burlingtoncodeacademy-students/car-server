@@ -1,0 +1,33 @@
+body {
+    background-color: #EEE9DA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    border: 1px solid #93BFCF;
+    padding: 1em;
+    border-radius: 3px;
+    min-width: 20%;
+}
+
+.form-container * {
+    border: none;
+    padding: 0.5em;
+    border-radius: 3px;
+}
+
+#submit {
+    background-color: #6096B4;
+    color: #EEE9DA;
+}
+
+#submit:hover {
+    cursor: pointer;
+    background-color: #2e81ad
+}
