@@ -45,6 +45,27 @@ router.get("/getall", (req, res) => {
   }
 });
 
+// Create an endpoint that has a GET method to find one car by query id
+// The full url for this endpoint is: http://127.0.0.1:4000/car/getone/:id
+router.get("/getone/", (req, res) => {
+    try {
+        let id = req.query.id
+        let foundCar = findById(id)
+
+        foundCar.length == 0
+        ? res.status(404).json({
+            message: `No car has been found`
+        })
+        : res.status(200).json({
+            foundCar
+        })
+    } catch (err) {
+        res.status(500).json({
+            message: `Error: ${err}`
+        })
+    }
+})
+
 // Create an endpoint that has a DELETE method
 // The full url for this endpoint is : http://127.0.0.1:4000/car/delete/:id
 
