@@ -91,3 +91,43 @@ router.post("/create", (req, res) => {
 ## ID Generator uuid
 
 - `npm install uuidv4`
+
+# Schema Validation
+
+
+### Mongoose
+
+An ODM (object data mapper)
+
+- Provides a way for us to connect to our database
+- Provides us with methods to CRUD our database
+- Provides us with ways to model and schema our data
+
+### Getting Started
+
+- To install mongoose in our car-server:
+- ``` npm i mongoose ```
+- import ```mongoose``` into our ```app.js``` file
+- import our mongo url from the .env file
+- instantiate it with the following options:
+
+```js
+const mongoose = require("mongoose")
+const DB_URL = process.env.DB_URL
+
+mongoose
+  .connect(DB_URL, {
+    // Changes how it parses the connection string
+    useNewUrlParser: true,
+    // Deprecates old ability to reconnect to db
+    useUnifiedTopology: true
+  })
+  .then(console.log(`Connected to ${MONGO_URL}`))
+  .catch(err => console.log(err))
+```
+
+### Schemas
+
+A well-defined document data structure that will be inserted into a collection. It is used to create a model, and based on ```SchemaTypes``` (aka: data types)
+
+
