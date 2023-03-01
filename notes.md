@@ -130,4 +130,7 @@ mongoose
 
 A well-defined document data structure that will be inserted into a collection. It is used to create a model, and based on ```SchemaTypes``` (aka: data types)
 
+### Model
+
+A constructor built out of the data schematic (Schema). It's responsible for all of the CRUD work from respective collection.
 

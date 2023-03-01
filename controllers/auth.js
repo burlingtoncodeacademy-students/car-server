@@ -1,32 +1,29 @@
 const router = require("express").Router();
 const fs = require("fs");
 const dbPath = "./db/users.json";
-// TODO: build a /register controllers
-// let userDB = [
-//   { name: "Tyler", email: "tylermalone@me.com", password: "Malone55" },
-// ];
+const User = require("../models/User")
 
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
   try {
-    let { name, email, password } = req.body;
-    // TODO: grab a current snapshot of the database
-    let userDB = read();
-    // TODO: check to see if the user exists
-    let userExistArray = userDB.filter((user) => user.email === email);
-    if (userExistArray.length > 0) {
-      throw Error("Email already exisits");
+    const { name, email, password } = req.body
+
+    // Checks if user entered all required values
+    if (!name, !email, !password) {
+      throw new Error("The user has provided undefined schema values")
+      res.status(406).json({
+        message: `Invalid schema`
+      })
     }
+    
+    // Instantiates a new model instance with provided object values
+    const newUser = new User({ name, email, password })
+    // Saves the model document into the collection
+    await newUser.save()
 
-    // TODO: add the new user to the snapshot
-    userDB.push({ name, email, password });
-
-    // TODO: save the new snapshot to rewrite the file.
-    const isSaved = save(userDB);
-    console.log(userDB);
-    // TODO: What if isSaved is false?
     res.status(201).json({
-      message: isSaved === true ? `User created` : "We had a problem",
-    });
+      message: `User created`,
+      newUser
+    })
   } catch (err) {
     res.status(500).json({
       message: `${err}`,
@@ -36,48 +33,31 @@ router.post("/register", (req, res) => {
 
 // TODO : build a /login controller
 
-router.post("/login", (req, res) => {
-  console.log("login route hit");
+router.post("/login", async (req, res) => {
   try {
-    let { email, password } = req.body;
-    let userDB = read();
-    // TODO: Check to see if the user exists
-    let userLogin = userDB.filter((user) => user.email === email);
-    console.log(userLogin);
-    // ! Checking to see if we have a user match
-    if (userLogin.length === 0) {
-      throw Error("user does not exisit");
-    }
-    // ! Passwords do not match
-    if (userLogin[0].password !== password) {
-      throw Error("user password does not match");
-    }
+    const { email, password } = req.body
 
-    res.status(200).json({
-      message: "login success",
-    });
+    const foundUser = await User.findOne({ email })
+
+    if (!foundUser) {
+      res.status(404).json({
+        message: `User not found`
+      })
+    } else {
+      foundUser.password == password
+      ? res.status(200).json({
+        message: `User logged in`,
+        foundUser
+      })
+      : res.status(403).json({
+        message: `Invalid password`
+      })
+    }
   } catch (error) {
     res.status(500).json({
       message: `${error}`,
     });
   }
 });
-
-function read() {
-  const file = fs.readFileSync(dbPath);
-  //   Converts a JSON object to object literal
-  const fileObj = JSON.parse(file);
-  return fileObj;
-}
-
-function save(data) {
-  fs.writeFileSync(dbPath, JSON.stringify(data), (error) => {
-    if (error) {
-      console.log(error);
-      return false;
-    }
-  });
-  return true;
-}
 
 module.exports = router;
