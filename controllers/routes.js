@@ -6,7 +6,6 @@ const Car = require("../models/Car");
 router.post("/create", async (req, res) => {
   try {
     const carIncoming = req.body;
-
     const newCar = new Car(carIncoming);
 
     newCar.save();
@@ -26,6 +25,7 @@ router.post("/create", async (req, res) => {
 // The full url for this endpoint is : http://127.0.0.1:4000/car/getall
 router.get("/getall", async (req, res) => {
   try {
+    console.log(req.user)
     const findAll = await Car.find({});
     res.status(200).json(findAll);
   } catch (error) {

@@ -10,13 +10,14 @@ const MONGO_URL = process.env.MONGO_URL
 
 const authController = require("./controllers/auth");
 const carController = require("./controllers/routes");
+const validate = require("./middlewares/validate")
 // app.use(cors());
 console.log(__dirname);
 app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
 app.use("/user", authController);
 
-app.use("/car", carController);
+app.use("/car", validate, carController);
 
 mongoose
   .connect(MONGO_URL, {
