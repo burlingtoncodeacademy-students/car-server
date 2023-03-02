@@ -5,7 +5,14 @@ const Car = require("../models/Car");
 // The full url for this endpoint is : http://127.0.0.1:4000/car/create
 router.post("/create", async (req, res) => {
   try {
+    // Takes the user id from validate session's User collection call
+    // It turns it from ObjectId data type to string data type
+    const userId = req.user._id.toString()
     const carIncoming = req.body;
+    // It appends userId property to the carIncoming object from the request
+    carIncoming.userId = userId
+    console.log(carIncoming)
+
     const newCar = new Car(carIncoming);
 
     newCar.save();
@@ -48,6 +55,29 @@ router.get("/getone/:id", async (req, res) => {
     });
   }
 });
+
+// Create an endpoint that has a GET method to find one car by USER id
+// The full url for this endpoint is: http://127.0.0.1:4000/car/getonebyuser/:id
+
+router.get("/getonebyuser/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params
+
+    const findItem = await Car.findOne({ userId })
+    
+    if (!findItem) {
+      throw new Error(`Cars by this user not found`)
+    } else {
+      res.status(200).json({
+        findItem
+      })
+    }
+  } catch(err) {
+    res.status(500).json({
+      message: `Error: ${err}`
+    })
+  }
+})
 
 // Create an endpoint that has a DELETE method
 // The full url for this endpoint is : http://127.0.0.1:4000/car/delete/:id

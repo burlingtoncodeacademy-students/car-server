@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-// const cors = require("cors");
+const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose")
 
@@ -11,7 +11,7 @@ const MONGO_URL = process.env.MONGO_URL
 const authController = require("./controllers/auth");
 const carController = require("./controllers/routes");
 const validate = require("./middlewares/validate")
-// app.use(cors());
+app.use(cors());
 console.log(__dirname);
 app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
