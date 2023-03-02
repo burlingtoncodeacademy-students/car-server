@@ -134,3 +134,40 @@ A well-defined document data structure that will be inserted into a collection. 
 
 A constructor built out of the data schematic (Schema). It's responsible for all of the CRUD work from respective collection.
 
+# Authentication
+
+A process where we identify an individual's identity using credentailing system (usually username and password)
+
+### bcryptjs
+
+A dependency that's easy to use which allows us to encrypt and decrypt the data
+
+### Getting started with bcryptjs
+
+- install it using ```npm i bcryptjs```
+- import it your `auth.js``` file:
+
+```js
+const bcrypt = require("bcryptjs")
+```
+- assign the value of password as it's added to the db to be the result of bcrypt's ```hashSync``` method
+- bcrypt takes two parameters: the string of password to hash, and salt
+- salt specifies the amount of times we run cryptographic algorithm on the password to scramble it
+
+```js
+
+const newUser = new User({ name, email, password: bcrypt.hashSync(password, 10) })
+
+```
+
+# Authorization
+
+The process of verifying the authenticity of the user
+
+### Session
+
+A process where server generates a session token based on initial authentication, and verifies its authenticity each time the user attempts to access protected routes (ie: their emails, or dashboard)
+
+### JWT Token
+
+JSON Web Token. An encoded token that contains payload that has been encrypted. It can be easily decrypted, so it should **NEVER** contain sensitive information. Its success is based on the *secret key*. This key verifies the *authenticity* of the data. It checks if it's genuine and has not been tampered with.
